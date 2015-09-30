@@ -1,0 +1,110 @@
+<template name="modal_in_course">
+       <!-- Modal Structure -->
+    <div id="modalAuthorSettings" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="row" style="height:50%">
+                <h4>Modal Header</h4>
+                <h4>Modal Header</h4>
+                <h4>Modal Header</h4>
+                <h4>Modal Header</h4>
+                <h4>Modal Header</h4>
+                <h4>Modal Header</h4>
+                <h4>Modal Header</h4>
+                <h4>Modal Header</h4>
+            </div>
+        </div>
+        <div class="row modal-footer teal" style="height:auto; margin-bottom:0px">
+               <div class="col l10 m10 s10 left">
+                   <div class="row center">
+                        <p>
+                          <input type="checkbox" id="urlCoAuthors" style="color:white"/>
+                          <label for="urlCoAuthors" style="color:white">Generate Url</label>
+                        </p>
+                        <div class="input-field col l12 m12 s12">
+                          <input id="inputAuthorName" type="text" class="validate" style="color:white">
+                          <label for="inputAuthorName" style="color:white">Author Name</label>
+                        </div>
+                        <div class="col l12 m12 s12 teal">
+                            <div class="row" style="margin-bottom:0px">
+                                <label class="col l6 m6 s6" style="color:white;text-align:left;">selected color :</label>
+                                <div class="col l6 m6 s6 selectedColor colorpickerBtn" style="background-color: rgba(225, 44, 44, 0.5);" color-value="rgba(225, 44, 44, 0.5)">
+                                    <p></p>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom:0px">
+                                <div class="btn waves-effect waves-light col l2 m2 s2 colorpickerBtn" style="background-color: rgba(225, 44, 44, 0.5);" color-value="rgba(225, 44, 44, 0.5)"></div>
+                                <div class="btn waves-effect waves-light col l2 m2 s2 colorpickerBtn" style="background-color: rgba(14, 51, 237, 0.5)" color-value="rgba(14, 51, 237, 0.5)"></div>
+                                <div class="btn waves-effect waves-light col l2 m2 s2 colorpickerBtn" style="background-color: rgba(90, 175, 64, 0.5)" color-value="rgba(90, 175, 64, 0.5)"></div>
+                                <div class="btn waves-effect waves-light col l2 m2 s2 colorpickerBtn" style="background-color: rgba(219, 118, 218, 0.5)" color-value="rgba(219, 118, 218, 0.5)"><p></p>
+                                </div>
+                                <div class="btn waves-effect waves-light col l2 m2 s2 colorpickerBtn" style="background-color: rgba(175, 166, 64, 0.5)" color-value="rgba(175, 166, 64, 0.5)"></div>
+                                <div class="btn waves-effect waves-light col l2 m2 s2 colorpickerBtn" style="background-color: rgba(189, 88, 21, 0.5)" color-value="rgba(189, 88, 21, 0.5)"></div>
+                            </div>
+                        </div>
+        
+                   </div>
+                </div>
+                <div class="col l2 m2 s2" style="width:100%">
+                   <div class="row">
+                   <div class="col l12 m12 s12">
+                    <a class="btn-floating blue disabled"><i class="material-icons">input</i></a>
+                    <div><label class="center" style="color:white;">save</label></div>
+                  </div>
+                   <div class="col l12 m12 s12">
+                    <a class="btn-floating orange"><i class="material-icons">not_interested</i></a>
+                    <div><label class=" center " style="color:white;">cancel</label></div>
+                    </div>
+                    <div class="col l12 m12 s12">
+                    <a class="btn-floating modal-close red"><i class="material-icons">close</i></a>
+                    <div><label class="center" style="color:white;">exit</label></div>
+                    </div>
+                   </div>
+               </div>
+        </div>
+    </div>
+   
+    <!-- Modal Structure -->
+    <div id="modalShowTodos" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h4>Modal Header</h4>
+            <p>A bunch of text</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="modalShowMessages" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h4>Modal Header</h4>
+            <p>A bunch of text</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="modalAddCard" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            {{>types_of_card}}
+        </div>
+        <div class="modal-footer flow-text waves-effect waves-teal">
+            Select Card Type
+            <a class="btn-floating btn modal-close waves-effect waves-light red"><i class="material-icons">close</i></a>
+        </div>
+    </div>
+    
+    <!-- Modal Structure -->
+          <div id="modalFontSize" class="modal">
+            <div class="modal-content">
+                <p class="range-field">
+                  <input type="range" min="0" max="100" />
+                </p>
+            </div>
+            <div class="modal-footer">
+              <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+            </div>
+          </div>
+</template>

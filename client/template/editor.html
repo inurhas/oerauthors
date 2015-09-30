@@ -1,0 +1,79 @@
+<template name="hello">
+  <div id="exampleToolbar">
+       <select id="font">
+            <option value="serif">Times</option>
+            <option value="sans-serif">Helvetica</option>
+            <option value="monospace">Courier</option>
+            <option value="cursive">Cursive</option>
+            <option value="fantasy">Fantasy</option>
+        </select>
+        <select id="size">
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+            <option>14</option>
+            <option>16</option>
+            <option>18</option>
+            <option>20</option>
+            <option>24</option>
+            <option>30</option>
+            <option>36</option>
+            <option>72</option>
+        </select>
+        <label>
+            <input type="checkbox" id="bold"><strong>B</strong></label>
+        <label>
+            <input type="checkbox" id="italic"><em>i</em></label>
+        <label>
+            <input type="checkbox" id="underline"><u>u</u></label>
+        <label>
+            <input type="checkbox" id="strikeout"><strike>s</strike></label>
+        <select id="align">
+            <option value="left">Left</option>
+            <option value="center">Center</option>
+            <option value="right">Right</option>
+            <option value="justify">Justify</option>
+        </select>
+        <select id="script">
+            <option value="normal">Normal</option>
+            <option value="super">Superscript</option>
+            <option value="sub">Subscript</option>
+        </select>
+        <select id="color">
+            <option value="black">Black</option>
+            <option value="red">Red</option>
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+        </select>
+        <button id="smiley"><img src="smiley.png"></button>
+        <button id="undo">Undo</button>
+        <button id="redo" disabled="">Redo</button>
+        <select id="valign">
+            <option value="top">Top</option>
+            <option value="middle">Middle</option>
+            <option value="bottom">Bottom</option>
+        </select>
+    </div>
+
+    <div>
+        <div id="exampleEditor" class="cardstext" style="overflow: hidden;">
+    <!--
+            <div class="carotaSpacer" style="width: 525px; height: 702px;">
+                <canvas width="525" height="702" class="carotaEditorCanvas" style="position: absolute; width: 525px; height: 702px; top: 0px;"></canvas>
+            </div>
+            <div class="carotaTextArea" style="overflow: hidden; position: absolute; height: 0px; left: 0px; top: 498px;">
+                <textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;"></textarea>
+            </div>
+    -->
+        </div>
+    </div>
+<!--
+    <div id="examplePersistence">
+        <div>
+            <textarea></textarea>
+        </div>
+    </div>
+-->
+</template>

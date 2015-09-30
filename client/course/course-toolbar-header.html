@@ -1,0 +1,106 @@
+<template name="course_toolbar_header">
+    <div style="display:block; margin:0px auto">
+        <div class="show-result" style="position: fixed; top: 0;left: 0; z-index:999; width: 100%;">
+            <ul class="mfb-component--tl mfb-slidein-spring" data-mfb-toggle="hover" style="margin:6px 25px">
+                <li class="mfb-component__wrap">
+                    <a href="#" class="mfb-component__button--main teal dropdown--tl lighten-2">
+                        <i class="mfb-component__main-icon--resting ion-plus-round"></i>
+                        <i class="mfb-component__main-icon--active ion-close-round"></i>
+                    </a>
+
+                    <ul class="mfb-component__list">
+                        <li>
+                            <a data-mfb-label="Collaborate" class="mfb-component__button--child dropdown--tl teal lighten-2 modalAuthorSettings">
+                                <i class="mfb-component__child-icon ion-social-github"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-mfb-label="show result" class="mfb-component__button--child dropdown--tl teal lighten-2">
+                                <i class="mfb-component__child-icon ion-social-github"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-mfb-label="list of courses" class="mfb-component__button--child dropdown--tl teal lighten-2">
+                                <i class="mfb-component__child-icon ion-social-octocat"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-mfb-label="list of cards" class="mfb-component__button--child dropdown--tl teal lighten-2">
+                                <i class="mfb-component__child-icon ion-social-twitter"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="mfb-component--tr mfb-slidein-spring" data-mfb-toggle="hover" style="margin:6px 25px">
+                <li class="mfb-component__wrap">
+                    <a href="#" class="mfb-component__button--main teal dropdown--tl lighten-2">
+                        <i class="mfb-component__main-icon--resting ion-plus-round"></i>
+                        <i class="mfb-component__main-icon--active ion-close-round"></i>
+                    </a>
+
+                    <ul class="mfb-component__list">
+                        <li>
+                            <a data-mfb-label="home" class="mfb-component__button--child dropdown--tl teal lighten-2">
+                                <i class="mfb-component__child-icon ion-social-github"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-mfb-label="account settings" class="mfb-component__button--child dropdown--tl teal lighten-2">
+                                <i class="mfb-component__child-icon ion-social-octocat"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-mfb-label="logout" class="mfb-component__button--child dropdown--tl teal lighten-2">
+                                <i class="mfb-component__child-icon ion-social-twitter"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="blue accent-2">
+                <div class="container">
+                    <div class="container">
+                        <div class="row center activeToolbar" id="temp_toolbar">
+                            <a class="ql-bold waves-effect waves-light btn center toolbar-icons">B</a>
+                            <a class="ql-link waves-effect waves-light btn center toolbar-icons"><i class="material-icons">http</i></a>
+                            <a class="ql-italic waves-effect waves-light btn center toolbar-icons">i</a>
+                            <a class="ql-underline waves-effect waves-light btn center toolbar-icons">u</a>
+                            <a class="hideAuthorship waves-effect waves-light btn center toolbar-icons red">S</a>
+                            <a class="waves-effect waves-light btn center toolbar-icons">L</a>
+                            <a class="waves-effect waves-light btn center toolbar-icons">P</a>
+                            <a class="waves-effect waves-light btn center toolbar-icons">Q</a>
+                            <a class="waves-effect waves-light btn center toolbar-icons">R</a>
+                            <a class="waves-effect waves-light btn center toolbar-icons">C</a>
+                            <a class="waves-effect waves-light btn center toolbar-icons">W</a>
+                        </div>
+                        {{#each cards.cards}} {{>cardToolbar}} {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="cardToolbar">
+    {{#if equals type "textcard"}} {{>toolbareditor}} {{/if}} {{#if equals type "imagecard"}} {{>cardimage}} {{/if}}
+</template>
+
+<template name="toolbareditor">
+    <div class="row center cardToolbar" id="toolbareditor_{{_id}}">
+        <a class="ql-bold waves-effect waves-light btn center toolbar-icons">B</a>
+        <a class="ql-link waves-effect waves-light btn center toolbar-icons"><i class="material-icons">http</i></a>
+        <a class="ql-italic waves-effect waves-light btn center toolbar-icons">i</a>
+        <a class="ql-underline waves-effect waves-light btn center toolbar-icons">u</a>
+        <a class="hideAuthorship waves-effect waves-light btn center toolbar-icons">S</a>
+        <a class="ql-size waves-effect waves-light btn center toolbar-icons">font size</a>
+        <a class="waves-effect waves-light btn center toolbar-icons">P</a>
+        <a class="waves-effect waves-light btn center toolbar-icons">Q</a>
+        <a class="waves-effect waves-light btn center toolbar-icons">R</a>
+        <a class="waves-effect waves-light btn center toolbar-icons">C</a>
+        <a class="waves-effect waves-light btn center toolbar-icons">W</a>
+
+    </div>
+</template>
