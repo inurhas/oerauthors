@@ -1,0 +1,98 @@
+<template name="modalCollaborate">
+    <div id="modalAuthorSettings" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="row" style="height:50%; padding-bottom:500px">
+                <ul class="collapsible popout" data-collapsible="accordion">
+                    {{#each listCoAuthors}} {{#if equals @index 1}} {{>listOfCoAuthorsUrl active="active" name=name color=color urlid=urlid url=url}} {{else}} {{>listOfCoAuthorsUrl}} {{/if}} {{/each}}
+                </ul>
+            </div>
+        </div>
+        <div class="modal-footer teal" style="height:auto; margin-bottom:0px">
+            <div class="row" style="margin-bottom:0px">
+                <div class="col l10 m10 s10" style="margin-bottom:0px">
+                    <div class="row" style="margin-bottom:0px">
+                        <form class="col s12">
+                            <div class="row" style="margin-bottom:0px">
+                                <div class="col s6">
+                                    <input type="checkbox" id="urlCoAuthors" style="color:white; width:7%; margin-top:7px" />
+                                    <label for="urlCoAuthors" style="color:white; width:10%; margin-top:7px">Url</label>
+                                </div>
+                                <div class="col s6">
+                                    <div class="row" style="margin-bottom:0px">
+                                        <div class="col s2">
+                                            <input type="checkbox" class="filled-in" id="filled-in-box-color" style="color:white; margin:7px 0 0 0;" checked="checked" />
+                                            <label for="filled-in-box-color" style="margin:7px 0 0 0; padding:0 0 0 0;"></label>
+                                        </div>
+                                        <div id="selectColorCoAuthor" class="col l10 m10 s6 btn waves-effect waves-light" style="background-color:{{coAuthorBG}}; height:25px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col l2 m2 s2 center" style="margin-bottom:0px">
+                    <a class="btn-floating orange" id="newCoAuthorUrl"><i class="material-icons">playlist_add</i></a>
+                </div>
+                <div class="col l10 m10 s10" style="margin-bottom:0px">
+                    <div class="row" style="margin-bottom:0px">
+                        <form class="col s12">
+                            <div class="row" style="margin-bottom:0px">
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">account_circle</i>
+                                    <input id="inputCoAuthorName" type="text" class="validate" value="{{coAuthorName}}">
+                                    <label for="inputCoAuthorName">Name</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col l2 m2 s2 center" style="margin-bottom:0px">
+                    <div class="btn-floating blue disabled" id="saveCoAuthorsBtn"><i class="material-icons">save</i></div>
+                </div>
+                <div class="col l2 m2 s2 center" style="margin-bottom:0px">
+                    <div class="btn-floating modal-close red"><i class="material-icons">close</i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="listOfCoAuthorsUrl">
+    <li>
+        <div class="collapsible-header {{active}}" style="background-color:{{color}}">
+            <i class="material-icons"> account_circle </i>{{name}}
+        </div>
+        <div class="collapsible-body row">
+            <div class="col s12">
+                <p>{{url}}</p>
+            </div>
+            <div class="col l4 m12 s12" style="margin-bottom:5px">
+                <div class="deleteCoAuthors btn btn-small small red right" style="width:100%;"><i class="material-icons center">close</i>delete</div>
+            </div>
+            <div class="col l4 m12 s12" style="margin-bottom:5px">
+                <div class="editCoAuthors btn btn-small small teal" style="width:100%;"><i class="material-icons center">settings_applications</i>edit</div>
+            </div>
+            <div class="col l4 m12 s12" style="margin-bottom:5px">
+                <div id="copyCoAuthors_{{urlid}}" class="btn btn-small small blue left" style="width:100%" data-clipboard-text="{{url}}"><i class="material-icons center">description</i>Copy Link</div>
+            </div>
+        </div>
+    </li>
+</template>
+
+<!--append this modal to course.html-->
+<template name="modalSelectColorCoAuthor">
+    <div id="modalSelectColorCoAuthor" class="modal modal-fixed-footer">
+        <div class="modal-content row">
+            <div class="selectedColorBtn btn waves-effect waves-light col l4 m6 s12 " style="background-color: rgb(225, 44, 44);" color-value="rgb(225, 44, 44)"></div>
+            <div class="selectedColorBtn btn waves-effect waves-light col l4 m6 s12 " style="background-color: rgb(14, 51, 237)" color-value="rgb(14, 51, 237)"></div>
+            <div class="selectedColorBtn btn waves-effect waves-light col l4 m6 s12 " style="background-color: rgb(90, 175, 64)" color-value="rgb(90, 175, 64)"></div>
+            <div class="selectedColorBtn btn waves-effect waves-light col l4 m6 s12 " style="background-color: rgb(219, 118, 218)" color-value="rgb(219, 118, 218)"></div>
+            <div class="selectedColorBtn btn waves-effect waves-light col l4 m6 s12 " style="background-color: rgb(175, 166, 64)" color-value="rgb(175, 166, 64)"></div>
+            <div class="selectedColorBtn btn waves-effect waves-light col l4 m6 s12 " style="background-color: rgb(189, 88, 21)" color-value="rgb(189, 88, 21)"></div>
+        </div>
+        <div class="modal-footer flow-text waves-effect waves-teal">
+            Select Color
+            <div class="btn-floating btn modal-close waves-effect waves-light red"><i class="material-icons">close</i></div>
+        </div>
+    </div>
+</template>

@@ -5,7 +5,6 @@
 # but you can also edit it by hand.
 
 iron:router
-jsduncan2:materialize
 jquery
 standard-minifiers
 meteor-base
@@ -23,3 +22,13 @@ check
 yuukan:streamy
 yuukan:streamy-rooms
 reactive-var
+meteorhacks:npm
+
+
+npm-container
+propercursive:zeroclipboard
+accounts-base
+accounts-password
+accounts-ui-unstyled
+# jsduncan2:materialize
+jsduncan2:materialize

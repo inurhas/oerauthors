@@ -7,7 +7,7 @@ Template.myCourses.helpers({
 Template.listOwnCourses.events({
     'click .listOfCourse': function(evt, tmpl) {
         Session.set("activeCourse", tmpl.data._id);
-        var path = "/courses/" + tmpl.data._id
+        var path = "/" + tmpl.data._id
         Router.go(path)
     }
 })
@@ -55,196 +55,25 @@ Template.course_toolbar_header.helpers({
     cards: function() {
         return listOfCards()
     }
-})
-
-function urlsplit() {
-    var urlCourse = Router.current().location.get().href
-    var uniqueUrl = urlCourse.split("courses/")[1];
-    var idCourseUrl = uniqueUrl.split("?#=");
-    return idCourseUrl
-}
-
-Template.course.events({
-    'click .addNewTextcard': function(evt, tmpl) {
-        //Meteor.call("deleteAllCardsInCourse",Session.get("activeCourse"))
-        var divElement = document.createElement("div")
-        divElement.setAttribute("class", "editor")
-        var editor = new Quill(divElement);
-        var delta = editor.getContents();
-        Meteor.call("addDelta", delta, function(error, result) {
-            Meteor.call("addNewCardsToCourse", Session.get("activeCourse"), result, "textcard");
-        });
-    },
-    'click .modalAddCards': function(evt, tmpl) {
-        $('#modalAddCard').openModal();
-    },
-    'click .modalShowTodos': function(evt, tmpl) {
-        $('#modalShowTodos').openModal();
-    },
-    'click .modalShowMessages': function(evt, tmpl) {
-        $('#modalShowMessages').openModal();
-    },
-    'click .modalAuthorSettings': function(evt, tmpl) {
-        $('#modalAuthorSettings').openModal();
-    }
-})
-
-Template.course.onRendered(function() {
-    var courseUrl = "http://localhost:3000" + Iron.Location.get().path
-    var sortableUl = document.getElementById('listOfCourseCards')
-    var editableList = Sortable.create(sortableUl, {
-        delay: 0,
-        animation: 200,
-        draggable: ".cardLi",
-        handle: ".dragbtnli",
-        store: {
-            /**
-             * Get the order of elements. Called once during initialization.
-             * @param   {Sortable}  sortable
-             * @returns {Array}
-             */
-            get: function(sortable) {
-                var order = localStorage.getItem(sortable.options.group);
-                return order ? order.split('|') : [];
-            },
-
-            /**
-             * Save the order of elements. Called onEnd (when the item is dropped).
-             * @param {Sortable}  sortable
-             */
-            set: function(sortable) {
-                var order = sortable.toArray();
-                var ordered = []
-                for (var i = 0, len = order.length; i < len; i++) {
-                    var selector = '[data-id=' + order[i] + ']'
-                    var listElement = document.querySelector(selector);
-                    ordered.push({
-                        _id: order[i].split('_')[1],
-                        type: listElement.getAttribute('type')
-                    })
-                }
-                Meteor.call("updateCardsPosition", Session.get("activeCourse"), ordered);
-            }
-        }
-    });
-    Typerange()
-})
-
-function Typerange() {
-    var range_type = 'input[type=range]';
-    var range_mousedown = false;
-
-    $(range_type).each(function() {
-        var thumb = $('<span class="thumb"><span class="value"></span></span>');
-        $(this).after(thumb);
-    });
-
-    var range_wrapper = '.range-field';
-    $(document).on("touchstart", range_wrapper, function(e) {
-        var thumb = $(this).children('.thumb');
-        if (thumb.length <= 0) {
-            thumb = $('<span class="thumb"><span class="value"></span></span>');
-            $(this).append(thumb);
-        }
-
-        range_mousedown = true;
-        $(this).addClass('active');
-
-        if (!thumb.hasClass('active')) {
-            thumb.velocity({
-                height: "30px",
-                width: "30px",
-                top: "-20px",
-                marginLeft: "-15px"
-            }, {
-                duration: 300,
-                easing: 'easeOutExpo'
-            });
-        }
-        var left = e.originalEvent.touches[0].pageX - $(this).offset().left;
-        var width = $(this).outerWidth();
-
-        if (left < 0) {
-            left = 0;
-        } else if (left > width) {
-            left = width;
-        }
-        thumb.addClass('active').css('left', left);
-        thumb.find('.value').html($(this).children('input[type=range]').val());
-
-    });
-
-    $(document).on("touchend", range_wrapper, function() {
-        range_mousedown = false;
-        $(this).removeClass('active');
-    });
-
-    $(document).on("touchmove", range_wrapper, function(e) {
-
-        var thumb = $(this).children('.thumb');
-        if (range_mousedown) {
-            if (!thumb.hasClass('active')) {
-                thumb.velocity({
-                    height: "30px",
-                    width: "30px",
-                    top: "-20px",
-                    marginLeft: "-15px"
-                }, {
-                    duration: 300,
-                    easing: 'easeOutExpo'
-                });
-            }
-            var left = e.originalEvent.touches[0].pageX - $(this).offset().left;
-            var width = $(this).outerWidth();
-
-            if (left < 0) {
-                left = 0;
-            } else if (left > width) {
-                left = width;
-            }
-            thumb.addClass('active').css('left', left);
-            thumb.find('.value').html($(this).children('input[type=range]').val());
-        }
-
-    });
-
-    $(document).on("touchend", range_wrapper, function() {
-        if (!range_mousedown) {
-
-            var thumb = $(this).children('.thumb');
-
-            if (thumb.hasClass('active')) {
-                thumb.velocity({
-                    height: "0",
-                    width: "0",
-                    top: "10px",
-                    marginLeft: "-6px"
-                }, {
-                    duration: 100
-                });
-            }
-            thumb.removeClass('active');
-        }
-    });
-}
+});
 
 Template.card.events({
-  "click .cardLi": function(event, template){
-     var idCardtext = template.data._id
-     Session.set('IDactiveEditor',template.data._id);
-     var divToolbar = document.querySelector('.activeEditor');
-     if (divToolbar) {
-         var dActive = document.getElementById(divToolbar.id);
-         var divID = divToolbar.id.split('_')[1]
-         dActive.className += "cardToolbar"
-         dActive.className = dActive.className.replace("activeEditor", "");
-         document.getElementById("contentEditor_"+divID).style.display = "block";
-     }
-     document.getElementById("contentEditor_"+idCardtext).style.display = "none";
-     var dShow = document.getElementById('editor_' + idCardtext);
-     dShow.className = dShow.className.replace("cardToolbar", "")
-     document.getElementById('editor_' + idCardtext).className += " activeEditor";
-  }
+    "click .cardLi": function(event, template) {
+        var idCardtext = template.data._id
+            // Session.set('IDactiveEditor', template.data._id);
+        var divToolbar = document.querySelector('.activeEditor');
+        if (divToolbar) {
+            var dActive = document.getElementById(divToolbar.id);
+            var divID = divToolbar.id.split('_')[1]
+            dActive.className += "cardToolbar"
+            dActive.className = dActive.className.replace("activeEditor", "");
+            document.getElementById("contentEditor_" + divID).style.display = "block";
+        }
+        document.getElementById("contentEditor_" + idCardtext).style.display = "none";
+        var dShow = document.getElementById('editor_' + idCardtext);
+        dShow.className = dShow.className.replace("cardToolbar", "")
+        document.getElementById('editor_' + idCardtext).className += " activeEditor";
+    }
 });
 
 Template.cardtext.helpers({
@@ -257,20 +86,29 @@ Template.cardtext.helpers({
         divElement.setAttribute("class", "editor")
         var editor = new Quill(divElement);
         editor.setContents(cardContents.content);
-        var htmlEditor = editor.destroy();
+        var div = editor.container.innerHTML
+        div = div.replace('contenteditable="true"', '')
+        var htmlEditor = div
+        editor.destroy();
         return htmlEditor;
     }
 });
 
-Template.cardtext.onRendered(function(){
-      var idCardtext = this.data._id;
-      Meteor.call("findCardtext",idCardtext, function(err, res){
-          if (err){
-              console.log(err)
-          }else{
-              loadEditor(idCardtext)
-          }
-      })
+allEditor = {};
+Template.cardtext.onRendered(function() {
+    var idCardtext = this.data._id;
+    Meteor.call("findCardtext", idCardtext, function(err, res) {
+        if (err) {
+            console.log(err)
+        } else {
+            var quillEditor = loadEditor(idCardtext);
+            var otQuill = {
+                quill: quillEditor,
+                enable: true
+            }
+            allEditor[idCardtext] = otQuill
+        }
+    })
 });
 
 Template.toolbareditor.events({
@@ -280,6 +118,19 @@ Template.toolbareditor.events({
     }
 })
 
+Template.cardtext.events({
+    "click .editorQuill": function(event, template) {
+        var idCardtext = template.data._id
+        // if (Session.get('IDactiveEditor') != idCardtext) {
+        //     Streamy.rooms(urlsplit()[0]).emit('usedEditor', {
+        //         'idEditor': idCardtext,
+        //         'author':authorUrl().author.urlid
+        //     });
+        // }
+        Session.set('IDactiveEditor', template.data._id);
+    }
+});
+
 TextcardContent = function() {
     var cardContents = Textcard.findOne({
         _id: Session.get("textcard")
@@ -288,73 +139,90 @@ TextcardContent = function() {
         return cardContents
 }
 
-function loadContentEditor(idCardtext, div){
-  var retainOps = null;
-  var cardContents = Textcard.findOne({
-      _id: idCardtext
-  });
-  var editor = new Quill(div + idCardtext, {
-      modules: {
-          'link-tooltip': true,
-          'toolbar': {
-              container: '#toolbareditor_' + idCardtext
-          }
-      },
-      styles: false
-  });
-  var cursorManager = editor.addModule('multi-cursor', {
-      timeout: 1000
-  });
-  var authorship = editor.addModule('authorship', {
-      authorId: Session.get("browserUUID"), // from url collaborate setting
-      color: '#f44336',
-      enabled: true
-  });
+authorUrl = function(){
+  var selectedCourse = Courses.findOne({_id:urlsplit()[0]})
+  if (selectedCourse.authors.urlid == Meteor.userId()){
+      var allauthors = {
+        author : selectedCourse.authors,
+        coauthors : selectedCourse.coauthors
+      }
+      return allauthors
+  } else {
+      var urlCoAuthors = _.find(selectedCourse.coauthors, function(obj){return obj.urlid == urlsplit()[1]})
+      if (urlCoAuthors != undefined){
+        var coauthors = _.filter(selectedCourse.coauthors, function(obj){return obj.urlid != urlsplit()[1]})
+        coauthors.push(selectedCourse.authors)
+        var allauthors = {
+          author : urlCoAuthors,
+          coauthors : coauthors
+        }
+        return allauthors
+      }
+      return null
+  }
+}
 
-  $('.hideAuthorship').on("click", function() {
-      authorship.disable();
-  })
+function loadContentEditor(idCardtext, div) {
+    var retainOps = null;
+    var cardContents = Textcard.findOne({
+        _id: idCardtext
+    });
+    var editor = new Quill(div + idCardtext, {
+        modules: {
+            'link-tooltip': true,
+            'toolbar': {
+                container: '#toolbareditor_' + idCardtext
+            }
+        },
+        // styles: false
+        styles: false
+    });
 
-  editor.setContents(cardContents.content)
-  return editor
+    var cursorManager = editor.addModule('multi-cursor', {
+        timeout: 4000
+    });
+
+    if (authorUrl() != null){
+      var authorship = editor.addModule('authorship', {
+          authorId: authorUrl().author.urlid, // from url collaborate setting
+          color: authorUrl().author.color,
+          enabled: true
+      });
+      _.each(authorUrl().coauthors, function(obj){
+        authorship.addAuthor(obj.urlid,obj.color)
+      })
+    } else {
+      editor.editor.disable();
+    }
+
+    $('.hideAuthorship').on("click", function() {
+        authorship.disable();
+    })
+
+    editor.setContents(cardContents.content)
+    return editor
 }
 
 function loadEditor(idCardtext) {
-    var editor = loadContentEditor(idCardtext,'#editor_')
-    Textcard.find({
-        _id: idCardtext
-    }).observeChanges({
-        changed: function(id, deltaNew) {
-            if (id == idCardtext) {
-                var newContents = Textcard.findOne({
-                    _id: idCardtext
-                })
-                var authorIdOps = newContents.editorops.author
-                if (syncAuthor(authorIdOps)) {
-                    var authorship = editor.getModule('authorship');
-                    authorship.addAuthor(authorIdOps, 'rgba(155,167,51,0.5)');
-                    retainOps = newContents.editorops.opsauthor.ops[0].retain
-                    editor.updateContents(newContents.editorops.opsauthor)
-                    // editor.setContents(newContents.content)
-                }
-            }
-        }
-    });
-
+    var editor = loadContentEditor(idCardtext, '#editor_')
+    // editor.onModuleLoad('authorship', function(toolbar) {
+    //   console.log('Toolbar has been added');
+    // });
     editor.on('text-change', function(delta, source) {
         var editablediv = document.getElementById(editor.id);
-        if (source == 'api') {
+        if (source === 'api') {
             var editablediv = document.getElementById(editor.id);
             var divText = editablediv.firstChild;
             var prevTextLength = Session.get("prevTextLength");
-            // console.log(prevTextLength)
             var newTextLength = editor.getLength();
             var positionCaret = Session.get("activeCaret") + (newTextLength - prevTextLength);
-            if (positionCaret<0){positionCaret=0}
+            if (positionCaret < 0) {
+                positionCaret = 0
+            }
             // console.log(retainOps,positionCaret)
             if (Session.get("IDactiveEditor") == idCardtext) {
-                if (retainOps <= Session.get("activeCaret") ||
-                    retainOps===undefined ) {
+                if (Session.get('retainOps') <= Session.get("activeCaret") ||
+                    Session.get('retainOps') === undefined) {
                     editor.setSelection(positionCaret, positionCaret);
                     Session.set("activeCaret", positionCaret);
                     Session.set("prevTextLength", editor.getLength());
@@ -364,29 +232,55 @@ function loadEditor(idCardtext) {
                     Session.set("prevTextLength", editor.getLength());
                 }
             }
-        } else if (source == 'user') {
+        } else if (source === 'user') {
             if (editor.getSelection()) {
                 var caretPosition = editor.getSelection().end;
                 Session.set("activeCaret", caretPosition);
-                // console.log(caretPosition)
-            }
+            };
             var newContent = editor.getContents()
-            // console.log(delta)
+            console.log(delta)
             Meteor.call("updateDelta", idCardtext, newContent, delta, Session.get("browserUUID"));
+            Streamy.rooms(urlsplit()[0]).emit('content_ops', {
+                'idEditor': idCardtext,
+                'body': newContent,
+                'ops': delta,
+                'author': authorUrl().author.urlid
+            });
             Session.set("IDactiveEditor", idCardtext);
             Session.set("prevTextLength", editor.getLength());
-        }
+        };
     });
 
     //Caret Position on Click
     editor.on('selection-change', function(range, source) {
-        if (source == 'api') {
+        if (source === 'api') {
             cursorquill(range, editor, idCardtext)
-        } else if (source == 'user') {
+        } else if (source === 'user') {
             var caretPosition = editor.getSelection();
-            cursorquill(range, editor, idCardtext)
+            cursorquill(range, editor, idCardtext);
+            Session.set("IDactiveEditor", idCardtext);
+            if (range && range.start == range.end){
+              function sourceType(){
+                window.onkeydown = function(e){
+                  if (e.keyIdentifier == "Up" || e.keyIdentifier == "Down" ||
+                  e.keyIdentifier == "Right" || e.keyIdentifier == "Left" ){
+                     return "arrowPress"
+                  } else { return "notArrowPress" }
+                };
+              }
+              console.log(window.event)
+              Streamy.rooms(urlsplit()[0]).emit('usedEditor', {
+                  'idEditor': idCardtext,
+                  'author':authorUrl().author.urlid,
+                  'position':range.end,
+                  'name':authorUrl().author.name,
+                  'color':authorUrl().author.color,
+                  'sourceType':sourceType(),
+              });
+            }
         }
     });
+    return editor
 }
 
 Template.cardimage.helpers({
@@ -409,7 +303,7 @@ function cursorquill(range, editor, idCardtext) {
         var dHide = document.getElementById('toolbareditor_' + idCardtext);
         dHide.className = dHide.className.replace("cardToolbar", "")
         document.getElementById('toolbareditor_' + idCardtext).className += " activeToolbar";
-
+        dHide.className = dHide.className.replace("  activeToolbar", " activeToolbar")
         if (range.start == range.end) {
             Session.set("activeCaret", range.end);
             Session.set("IDactiveEditor", idCardtext);
@@ -426,20 +320,21 @@ function cursorquill(range, editor, idCardtext) {
                 editor.updateContents(newContents.content)
             }
         }
-    } else {
-      var divToolbar = document.querySelector('.activeEditor');
-      if (divToolbar) {
-          var dActive = document.getElementById(divToolbar.id);
-          var divID = divToolbar.id.split('_')[1]
-          dActive.className += "cardToolbar"
-          dActive.className = dActive.className.replace("activeEditor", "");
-          document.getElementById("contentEditor_"+divID).style.display = "block";
-      }
     }
+    // else {
+    //     var divToolbar = document.querySelector('.activeEditor');
+    //     if (divToolbar) {
+    //         var dActive = document.getElementById(divToolbar.id);
+    //         var divID = divToolbar.id.split('_')[1]
+    //         dActive.className += "cardToolbar"
+    //         dActive.className = dActive.className.replace("activeEditor", "");
+    //         document.getElementById("contentEditor_" + divID).style.display = "block";
+    //     }
+    // }
 }
 
 function syncAuthor(authorIdOps) {
-    if (authorIdOps == Session.get("browserUUID")) {
+    if (authorIdOps == Streamy.id()) {
         return false
     } else {
         return true
@@ -456,6 +351,7 @@ function syncContent(editor, idCardtext) {
     tempEditor.setContents(contentsInCollection.content);
     var textExisting = editor.getText();
     var textTemp = tempEditor.getText();
+    tempEditor.destroy();
     if (textExisting == textTemp) {
         return false
     } else {
@@ -464,104 +360,65 @@ function syncContent(editor, idCardtext) {
 }
 
 // Override Meteor._debug to filter for custom msgs
-Meteor._debug = (function (super_meteor_debug) {
-  return function (error, info) {
-    if (!(info && _.has(info, 'msg')))
-      super_meteor_debug(error, info);
-  }
+Meteor._debug = (function(super_meteor_debug) {
+    return function(error, info) {
+        if (!(info && _.has(info, 'msg')))
+            super_meteor_debug(error, info);
+    }
 })(Meteor._debug);
 
-var nick = new ReactiveVar();
-var room = new ReactiveVar('lobby');
-
-// Add a local only collection to manage messages
-Messages = new Mongo.Collection(null);
-
-// -------------------------------------------------------------------------- //
-// -------------------------------- Handlers -------------------------------- //
-// -------------------------------------------------------------------------- //
-
-/**
- * Try to retrieve a client by its nickname
- * @param  {String} nick Nickname to look for
- * @return {Client}      Client object or null|undefined if not found
- */
-function findClient(nick) {
-  return Clients.findOne({ 'nick': nick});
-}
-
-/**
- * Generic method to insert a message in the chat panel
- * @param  {String} room Room name concerned
- * @param  {String} body Body message
- * @param  {String} from Session id of the sender
- */
-function insertMessage(room, body, from) {
-  // Do nothing if not logged in
-  if(!nick.get())
-    return;
-
-  var c = from ? Clients.findOne({ 'sid': from }): null;
-
-  if(from && !c)
-    c = { 'nick': from };
-
-  Messages.insert({
-    'room': room,
-    'body': body,
-    'from': c && c.nick
-  });
-  //
-  // $('.chat__messages').scrollTo($('li.chat__messages__item:last'));
-}
-
-// On connected, subscribe to collections
-Streamy.onConnect(function() {
-  Meteor.subscribe('clients');
-  Meteor.subscribe('rooms', Streamy.id());
+Template.toolbareditor.events({
+    "click .testStreamy": function(event, template) {
+        // Streamy.rooms(urlsplit()[0]).emit('ops', {
+        //     'body': 'streamy'
+        // })
+        // console.log(timerTest);
+        // window.clearInterval(timerTest);
+    }
 });
 
-// On disconnect, reset nick name
-Streamy.onDisconnect(function() {
-  nick.set('');
-  Messages.remove({});
-});
+Streamy.on('content_ops', function(data) {
+    var editor = allEditor[data.idEditor].quill
+    var authorIdOps = data.__from
+    if (syncAuthor(authorIdOps)) {
+        Session.set('retainOps', data.ops.ops[0].retain)
+        var cursorManager = editor.getModule('multi-cursor');
+        if (_.isEmpty(cursorManager.cursors)==false){
+          cursorManager.moveCursor(data.author, data.ops.ops[0].retain);
+        }
+        // allEditor[data.idEditor].quill.setContents(data.body);
+        editor.updateContents(data.ops)
+        editor.editor.disable();
+        allEditor[data.idEditor].enable = false;
+        var enableAfter = setTimeout(function() {
+            editor.editor.enable();
+            allEditor[data.idEditor].enable = true;
+        }, 4000)
+    }
+})
 
-Streamy.on('nick_ack', function(data) {
-  nick.set(data.nick);
-});
-
-// On a lobby message, insert the message
-Streamy.on('lobby', function(data) {
-  insertMessage('lobby', data.body, data.__from);
-});
-
-// More generic, when receiving from a room this message, insert it
-Streamy.on('text', function(data) {
-  insertMessage(data.__in.toLowerCase(), data.body, data.__from);
-});
-
-// On private message
-Streamy.on('private', function(data) {
-  insertMessage(null, data.body, data.__from);
-});
-
-// Someone has joined
-Streamy.on('__join__', function(data) {
-  // Dismiss if self
-  if(data.sid === Streamy.id())
-    return;
-
-  var c = Clients.findOne({ 'sid': data.sid });
-  var msg = ((c && c.nick) || "Someone") + " has joined";
-
-  insertMessage(data.room.toLowerCase(), msg);
-});
-
-// Someone has left
-Streamy.on('__leave__', function(data) {
-  var c = Clients.findOne({ 'sid': data.sid });
-  var msg = ((c && c.nick) || 'Someone') + " has left";
-
-  insertMessage(data.room.toLowerCase(), msg);
-});
+Streamy.on('usedEditor', function(data) {
+    var authorIdOps = data.__from
+    var editor = allEditor[data.idEditor].quill
+    if (syncAuthor(authorIdOps)) {
+        console.log(data.sourceType)
+        if (data.sourceType == "notArrowPress"){
+          Materialize.toast('someone edit ' + data.idEditor + '!', 2000, 'rounded')
+        }
+        var cursorManager = editor.getModule('multi-cursor');
+        var colorAuthor = data.color
+        var colorAuthor_last = colorAuthor.split(",")[2]
+        var b_color = colorAuthor_last.split(")")[0]
+        colorAuthor = colorAuthor.replace("rgb","rgba");
+        colorAuthor = colorAuthor.replace(colorAuthor_last,b_color+",0.7)");
+        cursorManager.setCursor(data.author,data.position,data.name, colorAuthor);
+        if (data.idEditor == Session.get('IDactiveEditor')) {
+            editor.editor.disable();
+            allEditor[data.idEditor].enable = false;
+            var enableAfter = setTimeout(function() {
+                editor.editor.enable();
+                allEditor[data.idEditor].enable = true;
+            }, 5000)
+        }
+    }
+})

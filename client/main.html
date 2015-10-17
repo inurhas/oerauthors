@@ -31,7 +31,10 @@
 
 <template name="card">
     <li class="cardLi" style="margin: 0 0 10px 0;" data-id="sortable_{{_id}}" type="{{type}}">
-        {{#if equals type "textcard"}} {{>cardtext}} {{/if}} {{#if equals type "imagecard"}} {{>cardimage}} {{/if}}
+        {{#if equals type "textcard"}} {{>cardtext}} {{/if}}
+        {{#if equals type "imagecard"}} {{>cardimage}} {{/if}}
+        {{#if equals type "videocard"}} {{>cardvideo}} {{/if}}
+        {{#if equals type "quizcard"}} {{>cardquiz}} {{/if}}
     </li>
 </template>
 
@@ -46,7 +49,7 @@
                 <div class="card-panel teal ql-container" id="contentEditor_{{_id}}">
                   {{{content}}}
                 </div>
-                <div class="card-panel teal cardToolbar" id="editor_{{_id}}">
+                <div class="card-panel teal cardToolbar editorQuill" id="editor_{{_id}}">
                 </div>
             </div>
         </div>
@@ -54,6 +57,38 @@
 </template>
 
 <template name="cardimage">
+    <div class="container">
+        <div class="container">
+            <div class="col s12 m5 l6">
+                <div class="card-panel red">
+                    <p class=" flow-text">
+                        <span class="white-text">
+                        {{content.content}}
+                      </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="cardvideo">
+    <div class="container">
+        <div class="container">
+            <div class="col s12 m5 l6">
+                <div class="card-panel red">
+                    <p class=" flow-text">
+                        <span class="white-text">
+                        {{content.content}}
+                      </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="cardquiz">
     <div class="container">
         <div class="container">
             <div class="col s12 m5 l6">

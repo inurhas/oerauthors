@@ -24,7 +24,17 @@
     <ul id="listOfCourseCards">
         {{#each cards.cards}} {{>card}} {{/each}}
     </ul>
-    
     {{>course_toolbar}}
-    {{>modal_in_course}}
+    {{>course_modals}}
+</template>
+
+<template name="course_modals">
+  {{>modalCollaborate}}
+  {{>modalShowTodos}}
+  {{>modalShowMessages}}
+  {{>modalAddCard}}
+  {{>modalFontSize}}
+  {{>modalSelectColorCoAuthor}}
+  {{>modalGeneralMessage}}
+  {{>modalAccountsSetting}}
 </template>

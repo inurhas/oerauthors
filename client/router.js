@@ -4,18 +4,21 @@ Router.map( function () {
     });
     this.route('course', {
         // get parameter via this.params
-        path: '/courses/:_id',
+        path: '/:_id',
         waitOn : function(){
           return Meteor.subscribe('textcard');
-        }
-//        onBeforeAction: function (pause) {
-//            var textcard = Textcard.findOne({_id: this.params._id})
-//            if (textcard && textcard.content) {
-//                this.next();
-//            }else {
-//                Textcard.findOne({_id: this.params._id})
-//                this.next();
-//            }
-//        }
+        },
+        onBeforeAction : function(){
+          Streamy.join(urlsplit()[0])
+          this.next();
+        },
     });
 });
+
+urlsplit = function() {
+    var urlCourse = Router.current().location.get().href
+    var uniqueUrl = urlCourse.split("/");
+    uniqueUrl = uniqueUrl[uniqueUrl.length - 1]
+    var idCourseUrl = uniqueUrl.split("?#=");
+    return idCourseUrl
+}
